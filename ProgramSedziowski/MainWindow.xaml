@@ -1,0 +1,141 @@
+﻿<Window x:Class="ProgramSedziowski.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProgramSedziowski"
+        mc:Ignorable="d"
+        Title="Program sędziego" Height="516.2" Width="525">
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <local:BoardSizeToColorConverter x:Key="boardSizeConverter" />
+
+        <DataTemplate x:Key="errorListTemplate">
+            <StackPanel Margin="3" HorizontalAlignment="Stretch">
+                <TextBlock Foreground="Red" Text="{Binding Name}" TextWrapping="Wrap"/>
+                <Grid HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="110"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Foreground="Gray" Text="{Binding ApplicationName}"/>
+                    <TextBlock Foreground="Gray" Text="{Binding Date}" Grid.Column="1"/>
+                </Grid>
+            </StackPanel>
+        </DataTemplate>
+
+    </Window.Resources>
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+        <Grid.Background>
+            <RadialGradientBrush GradientOrigin="1,1" SpreadMethod="Reflect">
+                <GradientStop Color="#FF003EB9" Offset="0"/>
+                <GradientStop Color="#FFD8E4FA" Offset="1"/>
+            </RadialGradientBrush>
+        </Grid.Background>
+        <TabControl x:Name="tabControl" Margin="0,0,0.4,0.4" Background="#14FFFFFF">
+            <TabItem Header="Gra">
+                <Grid Margin="0,2,-0.2,-0.2">
+                    <TextBox x:Name="textBox" Height="23" Margin="158,0,93.8,0" TextWrapping="Wrap" Text="{Binding ApplicationsPath, Mode=TwoWay}" VerticalAlignment="Top" IsReadOnly="True" BorderBrush="#FF00215C"/>
+                    <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="0,3,0,0" TextWrapping="Wrap" Text="Folder z prog. walczącymi:" VerticalAlignment="Top"/>
+                    <Button x:Name="button" Content="Przeglądaj..." HorizontalAlignment="Right" Margin="0,0,14,0" VerticalAlignment="Top" Width="75" Command="{Binding Path=SelectDirectoryCommand}" Height="23"/>
+
+                    <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="0,24,0,0" TextWrapping="Wrap" Text="Rozmiar planszy:" VerticalAlignment="Top"/>
+                    <Slider x:Name="slider" Margin="156,28,94,0" Minimum="13" Maximum="51" Value="{Binding BoardSize}" Height="24" VerticalAlignment="Top"/>
+                    <TextBlock x:Name="textBlock2" Margin="0,28,14,0" TextWrapping="Wrap" Text="{Binding BoardSize}" Foreground="{Binding BoardSize, Converter={StaticResource boardSizeConverter}}" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75"/>
+
+                    <ListView ItemsSource="{Binding Path=GameApplicationList}" Margin="0,52,0,0" Background="#00000000" BorderBrush="#FF00215C" Height="204" VerticalAlignment="Top" >
+                        <ListView.View>
+                            <GridView>
+                                <GridView.Columns>
+                                    <GridViewColumn>
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Name}" HorizontalAlignment="Stretch">
+                                                    <TextBlock.ToolTip>
+                                                        <StackPanel Orientation="Vertical">
+                                                            <TextBlock FontWeight="Bold" Text="{Binding Name, StringFormat=Nazwa: {0}}"/>
+                                                            <TextBlock Text="{Binding Author, StringFormat=Autor: {0}}"/>
+                                                            <TextBlock Text="{Binding Path, StringFormat=Ścieżka: {0}}"/>
+                                                        </StackPanel>
+                                                    </TextBlock.ToolTip>
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                        <GridViewColumn.Header>
+                                            <TextBlock Text="Game name"></TextBlock>
+                                        </GridViewColumn.Header>
+                                        <GridViewColumn.Width>400</GridViewColumn.Width>
+                                    </GridViewColumn>
+                                    <GridViewColumn>
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Result.WinNum}"></TextBlock>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                        <GridViewColumn.Header>
+                                            <TextBlock Text="WIN"></TextBlock>
+                                        </GridViewColumn.Header>
+                                        <GridViewColumn.Width>30</GridViewColumn.Width>
+                                    </GridViewColumn>
+                                    <GridViewColumn>
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Result.LosNum}"></TextBlock>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                        <GridViewColumn.Header>
+                                            <TextBlock Text="LOS"></TextBlock>
+                                        </GridViewColumn.Header>
+                                        <GridViewColumn.Width>30</GridViewColumn.Width>
+                                    </GridViewColumn>
+                                    <GridViewColumn>
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Result.DisNum}"></TextBlock>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                        <GridViewColumn.Header>
+                                            <TextBlock Text="DIS"></TextBlock>
+                                        </GridViewColumn.Header>
+                                        <GridViewColumn.Width>30</GridViewColumn.Width>
+                                    </GridViewColumn>
+                                </GridView.Columns>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+
+                    <ListBox x:Name="listBox" Margin="0,261,0,36.6" ItemsSource="{Binding Path=ErrorsList}" ItemTemplate="{StaticResource errorListTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#00000000" BorderBrush="#FF00215C"/>
+
+                    <local:CircleBusyIndicator Width="200" Height="200" LabelText="{Binding TestingPercentage}" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVis}}"/>
+
+                    <Button Content="Uruchom testy" Command="{Binding Path=RunTestsCommand}" HorizontalAlignment="Left" Width="220" Margin="0,0,0,-0.4" Height="32" VerticalAlignment="Bottom"/>
+                    <Button Content="Wyzeruj" Command="{Binding Path=ResetCommand}" HorizontalAlignment="Left" Width="81" Margin="225,0,0,-0.4" Height="32" VerticalAlignment="Bottom"/>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Podgląd historii">
+                <Grid Background="#00E5E5E5">
+                    <TextBox x:Name="textBox1" Height="23" TextWrapping="Wrap" Text="{Binding HistoryFilePath}" VerticalAlignment="Top" Margin="4,0,78.8,0" IsReadOnly="True"/>
+                    <Button x:Name="button2" Content="Przeglądaj..." Margin="0,0,3.8,0" VerticalAlignment="Top" Command="{Binding Path=SelectHistoryFileCommand}" Height="23" HorizontalAlignment="Right" Width="75"/>
+                    <local:HistoryRenderer Margin="0,28,0.8,0" CurrentHistoryGame="{Binding CurrentHistoryGame}"/>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="O programie">
+                <StackPanel Orientation="Vertical" Background="#00E5E5E5">
+                    <TextBlock Foreground="#FF22008C" FontSize="18">Autorzy</TextBlock>
+                    <TextBlock>Krzysztof Kończak</TextBlock>
+                    <TextBlock>Adam Suski</TextBlock>
+                    <TextBlock Foreground="#FF22008C" FontSize="18">Sposób użycia</TextBlock>
+                    <TextBlock TextWrapping="Wrap">Najpierw należy wybrać folder w którym będą znajdować się foldery z programami walczącymi. W każdym z tych folderów powinien się znaleźć program walczący oraz plik info.txt.</TextBlock>
+                    <TextBlock TextWrapping="Wrap">Następnie kliknij przycisk "Uruchom testy".</TextBlock>
+                    <TextBlock TextWrapping="Wrap">Gdy testy się zakończą, zniknie wskaźnik ukończenia procesu. Lista aplikacji zostanie posortowana malejąco wg. zwycięstw i odwrotnie malejąco wg. dyskwalifikacji.</TextBlock>
+                    <TextBlock TextWrapping="Wrap">Wszelkie reklamacje proszę kierować do kolegi Adama.</TextBlock>
+
+                </StackPanel>
+
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
