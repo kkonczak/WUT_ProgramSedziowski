@@ -144,7 +144,7 @@ namespace ProgramSedziowski
             RunTestsCommand = new CommandHandler(() => { RunTestAllGameApplications(); });
             SelectDirectoryCommand = new CommandHandler(() => { SelectApplicationsFolder(); });
             SelectHistoryFileCommand = new CommandHandler(() => { SelectHistoryFile(); });
-            ResetCommand = new CommandHandler(() => { ErrorsList.Clear(); GameApplicationList.ForEach((e) => { e.Result.DisNum = 0;e.Result.LosNum = 0;e.Result.WinNum = 0; }); });
+            ResetCommand = new CommandHandler(() => { ErrorsList.Clear(); GameApplicationList.ForEach((e) => { e.Result.DisNum = 0; e.Result.LosNum = 0; e.Result.WinNum = 0; }); });
         }
 
         private void SelectApplicationsFolder()
@@ -250,7 +250,14 @@ namespace ProgramSedziowski
 
                 foreach (var currentGame in games)
                 {
-                    Dispatcher.Invoke(() => { CurrentGameNumber++; TestingPercentage = ((double)CurrentGameNumber * 100 / games.Count).ToString("N0"); });
+                    Dispatcher.Invoke(() =>
+                    {
+                        CurrentGameNumber++;
+                        TestingPercentage = ((double)CurrentGameNumber * 100 / games.Count).ToString("N0");
+                    });
+
+                    currentGame.boardSize = boardSize;
+                    currentGame.moves.Clear();
 
                     // create board for game
                     var boardArray = new int[boardSize, boardSize];
@@ -263,7 +270,7 @@ namespace ProgramSedziowski
                         int randY;
                         do
                         {
-                            randX = randomGenerator.Next(0, boardSize );
+                            randX = randomGenerator.Next(0, boardSize);
                             randY = randomGenerator.Next(0, boardSize);
                         } while (boardArray[randX, randY] == StaticFiledValue);
 

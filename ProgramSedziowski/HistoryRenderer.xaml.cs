@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -96,7 +97,7 @@ namespace ProgramSedziowski
             // load startPoints
             if (CurrentHistoryGame.moves.Count > 0)
             {
-                while (currentMoveNumber< CurrentHistoryGame.moves.Count && CurrentHistoryGame.moves[currentMoveNumber].gamerId == 255)
+                while (currentMoveNumber < CurrentHistoryGame.moves.Count && CurrentHistoryGame.moves[currentMoveNumber].gamerId == 255)
                 {
                     var currentPoint = CurrentHistoryGame.moves[currentMoveNumber].point;
                     ((Border)(mainGrid.Children.FindElement($"cell_{currentPoint.x}_{currentPoint.y}"))).Background = GamerIdToBrush(255);
@@ -107,12 +108,20 @@ namespace ProgramSedziowski
 
         private void NextStep()
         {
-            if (CurrentHistoryGame!=null && CurrentHistoryGame.moves.Count>0 && currentMoveNumber < CurrentHistoryGame.moves.Count)
+            if (CurrentHistoryGame != null && CurrentHistoryGame.moves.Count > 0 && currentMoveNumber < CurrentHistoryGame.moves.Count)
             {
                 var currentMove = CurrentHistoryGame.moves[currentMoveNumber];
                 var drawingCell = ((Border)(mainGrid.Children.FindElement($"cell_{currentMove.point.x}_{currentMove.point.y}")));
-                drawingCell.Background = GamerIdToBrush(currentMove.gamerId);
-                drawingCell.ToolTip = GetToolTip(GetGamerName(currentMove.gamerId),currentMove.time);
+                if (drawingCell != null)
+                {
+                    drawingCell.Background = GamerIdToBrush(currentMove.gamerId);
+                    drawingCell.ToolTip = GetToolTip(GetGamerName(currentMove.gamerId), currentMove.time);
+                }
+                else
+                {
+                    Debug.WriteLine("Coś nie halo!");
+                }
+
                 currentMoveNumber++;
             }
         }
@@ -136,7 +145,7 @@ namespace ProgramSedziowski
                 case 0:
                     return Brushes.White;
                 case 1:
-                    return new LinearGradientBrush(Color.FromArgb(255,255,0,0), Color.FromArgb(255, 180, 0, 0),90);
+                    return new LinearGradientBrush(Color.FromArgb(255, 255, 0, 0), Color.FromArgb(255, 180, 0, 0), 90);
                 case 2:
                     return new LinearGradientBrush(Color.FromArgb(255, 0, 0, 255), Color.FromArgb(255, 0, 0, 180), 90);
                 case 255:

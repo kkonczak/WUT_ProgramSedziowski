@@ -14,7 +14,7 @@ namespace ProgramSedziowski.Model
 
         public GameApplication gamer2;
 
-        public int boardSize=13;
+        public int boardSize;
 
         [XmlArray("MovesArray")]
         public List<RegisteredMove> moves = new List<RegisteredMove>();
