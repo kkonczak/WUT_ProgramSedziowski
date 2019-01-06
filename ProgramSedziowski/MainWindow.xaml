@@ -10,6 +10,7 @@
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
         <local:BoardSizeToColorConverter x:Key="boardSizeConverter" />
+        <local:NegateBoolConverter x:Key="negateBoolConverter" />
 
         <DataTemplate x:Key="errorListTemplate">
             <StackPanel Margin="3" HorizontalAlignment="Stretch">
@@ -19,8 +20,8 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="110"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Foreground="Gray" Text="{Binding ApplicationName}"/>
-                    <TextBlock Foreground="Gray" Text="{Binding Date}" Grid.Column="1"/>
+                    <TextBlock Foreground="Blue" Text="{Binding ApplicationName}"/>
+                    <TextBlock Foreground="Blue" Text="{Binding Date}" Grid.Column="1"/>
                 </Grid>
             </StackPanel>
         </DataTemplate>
@@ -41,9 +42,11 @@
                     <Button x:Name="button" Content="Przeglądaj..." HorizontalAlignment="Right" Margin="0,0,14,0" VerticalAlignment="Top" Width="75" Command="{Binding Path=SelectDirectoryCommand}" Height="23"/>
 
                     <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="0,24,0,0" TextWrapping="Wrap" Text="Rozmiar planszy:" VerticalAlignment="Top"/>
-                    <Slider x:Name="slider" Margin="156,28,94,0" Minimum="13" Maximum="51" Value="{Binding BoardSize}" Height="24" VerticalAlignment="Top"/>
-                    <TextBlock x:Name="textBlock2" Margin="0,28,14,0" TextWrapping="Wrap" Text="{Binding BoardSize}" Foreground="{Binding BoardSize, Converter={StaticResource boardSizeConverter}}" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75"/>
+                    <Slider x:Name="slider" Margin="156,28,94,0" Minimum="13" Maximum="51" Value="{Binding BoardSize}" Height="24" VerticalAlignment="Top" IsEnabled="{Binding IsRandomSize, Converter={StaticResource negateBoolConverter}}"/>
+                    <TextBlock x:Name="textBlock2" Margin="0,28,37,0" TextWrapping="Wrap" Text="{Binding BoardSize}" Foreground="{Binding BoardSize, Converter={StaticResource boardSizeConverter}}" VerticalAlignment="Top" HorizontalAlignment="Right" Width="52"/>
 
+                    <CheckBox x:Name="checkBox" Content="L" Height="17" Width="30" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,28,2,0" IsChecked="{Binding IsRandomSize}"/>
+                    
                     <ListView ItemsSource="{Binding Path=GameApplicationList}" Margin="0,52,0,0" Background="#00000000" BorderBrush="#FF00215C" Height="204" VerticalAlignment="Top" >
                         <ListView.View>
                             <GridView>
@@ -109,7 +112,7 @@
 
                     <local:CircleBusyIndicator Width="200" Height="200" LabelText="{Binding TestingPercentage}" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVis}}"/>
 
-                    <Button Content="Uruchom testy" Command="{Binding Path=RunTestsCommand}" HorizontalAlignment="Left" Width="220" Margin="0,0,0,-0.4" Height="32" VerticalAlignment="Bottom"/>
+                    <Button Content="Uruchom testy" Command="{Binding Path=RunTestsCommand}" IsEnabled="{Binding IsBusy, Converter={StaticResource negateBoolConverter}}" HorizontalAlignment="Left" Width="220" Margin="0,0,0,-0.4" Height="32" VerticalAlignment="Bottom"/>
                     <Button Content="Wyzeruj" Command="{Binding Path=ResetCommand}" HorizontalAlignment="Left" Width="81" Margin="225,0,0,-0.4" Height="32" VerticalAlignment="Bottom"/>
 
                 </Grid>

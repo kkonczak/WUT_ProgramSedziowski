@@ -34,10 +34,11 @@ namespace ProgramSedziowski
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if((int)value % 2 == 0)
+            if ((int)value % 2 == 0)
             {
                 return Brushes.Red;
-            }else
+            }
+            else
             {
                 return Brushes.Black;
             }
@@ -47,6 +48,19 @@ namespace ProgramSedziowski
         {
             throw new NotImplementedException();
         }
+    }
 
+    public class NegateBoolConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            bool b = (bool)value;
+            return !b;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return !((bool)value);
+        }
     }
 }

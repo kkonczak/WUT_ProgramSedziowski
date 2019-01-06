@@ -118,6 +118,17 @@ namespace ProgramSedziowski
             set { SetValue(HistoryFilePathProperty, value); }
         }
 
+        public static readonly DependencyProperty IsRandomSizeProperty =
+             DependencyProperty.Register(nameof(IsRandomSize),
+             typeof(bool),
+             typeof(ViewModel),
+             new FrameworkPropertyMetadata(false));
+        public bool IsRandomSize
+        {
+            get { return (bool)GetValue(IsRandomSizeProperty); }
+            set { SetValue(IsRandomSizeProperty, value); }
+        }
+
         #endregion
 
         #region Commands
@@ -237,7 +248,18 @@ namespace ProgramSedziowski
 
         public void RunTestAllGameApplications()
         {
+            if (IsBusy)
+            {
+                return;
+            }
+
             CurrentGameNumber = 0;
+            if (IsRandomSize)
+            {
+                Random sizeRandomGenerator = new Random(DateTime.Now.Millisecond);
+                BoardSize = 13 + sizeRandomGenerator.Next(20) * 2;
+            }
+
             Task.Run(async () =>
             {
                 Random randomGenerator = new Random(DateTime.Now.Millisecond);
