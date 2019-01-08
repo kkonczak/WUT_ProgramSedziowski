@@ -445,6 +445,13 @@ namespace ProgramSedziowski
                             stdout[0].WriteLine(ParsingFunctionsModule.PointsToString(previousPoints));
                             previousPoints = ParsingFunctionsModule.AnswerStringToPoint(await stdin[0].ReadLineWithTimeout(CommandTimeout));
                             PositionCheckerModule.CheckPosition(previousPoints, boardSize, boardArray, 0, currentGame);
+
+                            // Dla Dmitriego ;)
+                            if (PositionCheckerModule.IsAllBoardFull(boardArray, boardSize))
+                            {
+                                LoseGamer(currentGame, processes, 0);
+                                break;
+                            }
                         }
                         catch (EmptyAnswerException)
                         {
@@ -470,12 +477,19 @@ namespace ProgramSedziowski
                             stdout[1].WriteLine(ParsingFunctionsModule.PointsToString(previousPoints));
                             previousPoints = ParsingFunctionsModule.AnswerStringToPoint(await stdin[1].ReadLineWithTimeout(CommandTimeout));
                             PositionCheckerModule.CheckPosition(previousPoints, boardSize, boardArray, 1, currentGame);
+
+                            // Dla Dmitriego ;)
+                            if (PositionCheckerModule.IsAllBoardFull(boardArray, boardSize))
+                            {
+                                LoseGamer(currentGame, processes, 0);
+                                break;
+                            }
                         }
                         catch (EmptyAnswerException)
                         {
                             if (PositionCheckerModule.IsAllBoardFull(boardArray, boardSize))
                             {
-                                LoseGamer(currentGame, processes, 0);
+                                LoseGamer(currentGame, processes, 1);
                             }
                             else
                             {
@@ -501,11 +515,11 @@ namespace ProgramSedziowski
             });
         }
 
-        private void DisqualificateGamer(Game currentGame, Process[] processes, int num, Exception ex)
+        private void DisqualificateGamer(Game currentGame, Process[] processes, int gamerNumToDis, Exception ex)
         {
             Dispatcher.Invoke(() =>
             {
-                if (num == 0)
+                if (gamerNumToDis == 0)
                 {
                     currentGame.gamer1.Result.DisNum++;
                     currentGame.gamer2.Result.WinNum++;
@@ -518,16 +532,16 @@ namespace ProgramSedziowski
                     ProcessManagmentModule.KillAllProcesses(processes);
                 }
 
-                ErrorsList.Add(new Error(ex.Message, (num == 0 ? currentGame.gamer1.Name : currentGame.gamer2.Name)));
+                ErrorsList.Add(new Error(ex.Message, (gamerNumToDis == 0 ? currentGame.gamer1.Name : currentGame.gamer2.Name)));
                 GameHistorySaverModule.Save(currentGame);
             });
         }
 
-        private void LoseGamer(Game currentGame, Process[] processes, int num)
+        private void LoseGamer(Game currentGame, Process[] processes, int gamerNumToLos)
         {
             Dispatcher.Invoke(() =>
             {
-                if (num == 0)
+                if (gamerNumToLos == 0)
                 {
                     currentGame.gamer1.Result.LosNum++;
                     currentGame.gamer2.Result.WinNum++;

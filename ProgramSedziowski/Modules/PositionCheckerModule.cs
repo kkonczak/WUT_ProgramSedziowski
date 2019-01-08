@@ -5,7 +5,7 @@ namespace ProgramSedziowski.Modules
 {
     public static class PositionCheckerModule
     {
-        public static void CheckPosition(Model.Point[] points, int size, int[,] board, int numCurrentGamer, Game currentGame)
+        public static void CheckPosition(Point[] points, int size, int[,] board, int numCurrentGamer, Game currentGame)
         {
             bool isOk = true;
             foreach (var point in points)
@@ -91,6 +91,7 @@ namespace ProgramSedziowski.Modules
                     }
                 }
             }
+
             return true;
         }
     }
