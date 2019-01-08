@@ -9,6 +9,8 @@
              d:DesignHeight="200" d:DesignWidth="200"
     x:Name="_this">
     <UserControl.Resources>
+        <local:PercentToAngleConverter x:Key="percentToAngleConverter" />
+
         <Storyboard x:Key="ArcAnimate" RepeatBehavior="Forever">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="arc">
                 <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="180"/>
@@ -28,6 +30,9 @@
     <Grid>
         <Ellipse Fill="#82F4F4F5" HorizontalAlignment="Left" Height="200" Stroke="#FF001BAE" VerticalAlignment="Top" Width="200"/>
 
+        <ed:Arc ArcThickness="0" ArcThicknessUnit="Pixel" EndAngle="360" Margin="25,25,25,25" Stretch="None" Stroke="#99666666" StartAngle="0" StrokeThickness="5"/>
+        <ed:Arc ArcThickness="0" ArcThicknessUnit="Pixel" EndAngle="{Binding ElementName=_this, Path=CurrentTaskProgress, Converter={StaticResource percentToAngleConverter}}" Margin="25,25,25,25" Stretch="None" Stroke="#FF0F00FF" StartAngle="0" StrokeThickness="5"/>
+
         <ed:Arc x:Name="arc" ArcThickness="25" ArcThicknessUnit="Pixel" EndAngle="270" Fill="#FF2B4CFF" Stretch="None" Stroke="#FF001BAE" StartAngle="0" RenderTransformOrigin="0.5,0.5">
             <ed:Arc.RenderTransform>
                 <TransformGroup>
@@ -39,6 +44,5 @@
             </ed:Arc.RenderTransform>
         </ed:Arc>
         <TextBlock x:Name="textBlock" Margin="33,43,39,69" TextWrapping="Wrap" TextAlignment="Center" Text="{Binding ElementName=_this, Path=LabelText}" Foreground="#FF051D82" FontSize="72"/>
-
     </Grid>
 </UserControl>

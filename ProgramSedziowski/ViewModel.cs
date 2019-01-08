@@ -74,6 +74,17 @@ namespace ProgramSedziowski
             set { SetValue(TestingPercentageProperty, value); }
         }
 
+        public static readonly DependencyProperty CurrentGamePercentageProperty =
+             DependencyProperty.Register(nameof(CurrentGamePercentage),
+             typeof(int),
+             typeof(ViewModel),
+             new FrameworkPropertyMetadata(0));
+        public int CurrentGamePercentage
+        {
+            get { return (int)GetValue(CurrentGamePercentageProperty); }
+            set { SetValue(CurrentGamePercentageProperty, value); }
+        }
+
         public static readonly DependencyProperty GameApplicationListProperty =
              DependencyProperty.Register(nameof(GameApplicationList),
              typeof(ObservableCollection<GameApplication>),
@@ -297,7 +308,7 @@ namespace ProgramSedziowski
                         } while (boardArray[randX, randY] == StaticFiledValue);
 
                         boardArray[randX, randY] = StaticFiledValue;
-                        currentGame.moves.Add(new RegisteredMove(new Model.Point(randX, randY), StaticFiledValue));
+                        currentGame.startPoints.Add(new Model.Point(randX, randY));
                         startPoints.Add(new Model.Point(randX, randY));
                     }
 
@@ -353,7 +364,6 @@ namespace ProgramSedziowski
                     {
                         stdout[0].WriteLine(boardSize.ToString());
                         var result = await stdin[0].ReadLineWithTimeout(CommandTimeout);
-                        Debug.WriteLine(result);
                         if (result != "ok")
                         {
                             throw new InvalidAnswerException(result, "ok");
@@ -369,7 +379,6 @@ namespace ProgramSedziowski
                     {
                         stdout[1].WriteLine(boardSize.ToString());
                         var result = await stdin[1].ReadLineWithTimeout(CommandTimeout);
-                        Debug.WriteLine(result);
                         if (result != "ok")
                         {
                             throw new InvalidAnswerException(result, "ok");
@@ -438,6 +447,7 @@ namespace ProgramSedziowski
                         continue;
                     }
 
+                    int currentLoopNumber = 0;
                     while (true)
                     {
                         try
@@ -502,6 +512,11 @@ namespace ProgramSedziowski
                             DisqualificateGamer(currentGame, processes, 1, ex);
                             break;
                         }
+                        currentLoopNumber++;
+
+                        Dispatcher.Invoke(() => {
+                            CurrentGamePercentage = (currentLoopNumber * 100) / (int)(0.9*(boardSize * boardSize) / 4);
+                        });
                     }
 
                     GameHistorySaverModule.Save(currentGame);

@@ -31,8 +31,7 @@ namespace ProgramSedziowski.Modules
                     {
                         board[points[0].x, points[0].y] = numCurrentGamer + 1;
                         board[points[1].x, points[1].y] = numCurrentGamer + 1;
-                        currentGame.moves.Add(new RegisteredMove(points[0], numCurrentGamer + 1));
-                        currentGame.moves.Add(new RegisteredMove(points[1], numCurrentGamer + 1));
+                        currentGame.moves.Add(new RegisteredMove(points[0], points[1], numCurrentGamer + 1));
                     }
                     else
                     {

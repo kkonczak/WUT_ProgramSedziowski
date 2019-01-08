@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace ProgramSedziowski.Model
@@ -18,5 +15,8 @@ namespace ProgramSedziowski.Model
 
         [XmlArray("MovesArray")]
         public List<RegisteredMove> moves = new List<RegisteredMove>();
+
+        [XmlArray("StartMovesArray")]
+        public List<Point> startPoints = new List<Point>();
     }
 }

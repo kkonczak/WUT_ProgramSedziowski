@@ -110,7 +110,7 @@
 
                     <ListBox x:Name="listBox" Margin="0,261,0,36.6" ItemsSource="{Binding Path=ErrorsList}" ItemTemplate="{StaticResource errorListTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#00000000" BorderBrush="#FF00215C"/>
 
-                    <local:CircleBusyIndicator Width="200" Height="200" LabelText="{Binding TestingPercentage}" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVis}}"/>
+                    <local:CircleBusyIndicator Width="200" Height="200" LabelText="{Binding TestingPercentage}" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVis}}" CurrentTaskProgress="{Binding CurrentGamePercentage}"/>
 
                     <Button Content="Uruchom testy" Command="{Binding Path=RunTestsCommand}" IsEnabled="{Binding IsBusy, Converter={StaticResource negateBoolConverter}}" HorizontalAlignment="Left" Width="220" Margin="0,0,0,-0.4" Height="32" VerticalAlignment="Bottom"/>
                     <Button Content="Wyzeruj" Command="{Binding Path=ResetCommand}" HorizontalAlignment="Left" Width="81" Margin="225,0,0,-0.4" Height="32" VerticalAlignment="Bottom"/>

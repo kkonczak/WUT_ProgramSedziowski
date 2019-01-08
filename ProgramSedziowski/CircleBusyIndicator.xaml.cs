@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,9 +32,33 @@ namespace ProgramSedziowski
             set { SetValue(LabelTextProperty, value); }
         }
 
+        public static readonly DependencyProperty CurrentTaskProgressProperty =
+             DependencyProperty.Register(nameof(CurrentTaskProgress),
+             typeof(int),
+             typeof(CircleBusyIndicator),
+             new UIPropertyMetadata(10));
+        public string CurrentTaskProgress
+        {
+            get { return (string)GetValue(CurrentTaskProgressProperty); }
+            set { SetValue(CurrentTaskProgressProperty, value); }
+        }
+
         public CircleBusyIndicator()
         {
             InitializeComponent();
+        }
+    }
+
+    public class PercentToAngleConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return (int)value * 360 / 100;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return (int)value * 100 / 360;
         }
     }
 }

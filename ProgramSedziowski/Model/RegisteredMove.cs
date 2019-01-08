@@ -8,15 +8,17 @@ namespace ProgramSedziowski.Model
 {
     public class RegisteredMove
     {
-        public Point point;
+        public Point point1;
+        public Point point2;
         public int gamerId;
         public DateTime time;
 
         public RegisteredMove() { }
 
-        public RegisteredMove(Point point, int gamerId)
+        public RegisteredMove(Point point1, Point point2, int gamerId)
         {
-            this.point = point;
+            this.point1 = point1;
+            this.point2 = point2;
             this.gamerId = gamerId;
             this.time = DateTime.Now;
         }

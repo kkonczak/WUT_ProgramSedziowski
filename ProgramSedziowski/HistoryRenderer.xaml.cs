@@ -95,14 +95,9 @@ namespace ProgramSedziowski
         {
             currentMoveNumber = 0;
             // load startPoints
-            if (CurrentHistoryGame.moves.Count > 0)
+            foreach(var point in CurrentHistoryGame.startPoints)
             {
-                while (currentMoveNumber < CurrentHistoryGame.moves.Count && CurrentHistoryGame.moves[currentMoveNumber].gamerId == 255)
-                {
-                    var currentPoint = CurrentHistoryGame.moves[currentMoveNumber].point;
-                    ((Border)(mainGrid.Children.FindElement($"cell_{currentPoint.x}_{currentPoint.y}"))).Background = GamerIdToBrush(255);
-                    currentMoveNumber++;
-                }
+                ((Border)(mainGrid.Children.FindElement($"cell_{point.x}_{point.y}"))).Background = GamerIdToBrush(255);
             }
         }
 
@@ -111,15 +106,14 @@ namespace ProgramSedziowski
             if (CurrentHistoryGame != null && CurrentHistoryGame.moves.Count > 0 && currentMoveNumber < CurrentHistoryGame.moves.Count)
             {
                 var currentMove = CurrentHistoryGame.moves[currentMoveNumber];
-                var drawingCell = ((Border)(mainGrid.Children.FindElement($"cell_{currentMove.point.x}_{currentMove.point.y}")));
-                if (drawingCell != null)
+
+                var drawingCell = ((Border)(mainGrid.Children.FindElement($"cell_{currentMove.point1.x}_{currentMove.point1.y}")));
+                var drawingCell2 = ((Border)(mainGrid.Children.FindElement($"cell_{currentMove.point2.x}_{currentMove.point2.y}")));
+
+                if (drawingCell != null && drawingCell2!=null )
                 {
-                    drawingCell.Background = GamerIdToBrush(currentMove.gamerId);
-                    drawingCell.ToolTip = GetToolTip(GetGamerName(currentMove.gamerId), currentMove.time);
-                }
-                else
-                {
-                    Debug.WriteLine("Coś nie halo!");
+                    drawingCell2.Background = drawingCell.Background = GamerIdToBrush(currentMove.gamerId);
+                    drawingCell2.ToolTip = drawingCell.ToolTip = GetToolTip(GetGamerName(currentMove.gamerId), currentMove.time);
                 }
 
                 currentMoveNumber++;
@@ -132,9 +126,10 @@ namespace ProgramSedziowski
             {
                 currentMoveNumber--;
                 var currentMove = CurrentHistoryGame.moves[currentMoveNumber];
-                var drawingCell = ((Border)(mainGrid.Children.FindElement($"cell_{currentMove.point.x}_{currentMove.point.y}")));
-                drawingCell.Background = GamerIdToBrush(0);
-                drawingCell.ToolTip = null;
+                var drawingCell1 = ((Border)(mainGrid.Children.FindElement($"cell_{currentMove.point1.x}_{currentMove.point1.y}")));
+                var drawingCell2 = ((Border)(mainGrid.Children.FindElement($"cell_{currentMove.point2.x}_{currentMove.point2.y}")));
+                drawingCell2.Background  = drawingCell1.Background = GamerIdToBrush(0);
+                drawingCell2.ToolTip = drawingCell1.ToolTip = null;
             }
         }
 
