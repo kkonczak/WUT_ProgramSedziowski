@@ -10,7 +10,11 @@ namespace ProgramSedziowski.Modules
             {
                 if (process != null && !process.HasExited)
                 {
-                    process.Kill();
+                    try
+                    {
+                        process.Kill();
+                    }
+                    catch { }
                 }
             }
         }

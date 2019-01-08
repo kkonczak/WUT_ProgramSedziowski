@@ -291,6 +291,7 @@ namespace ProgramSedziowski
 
                     currentGame.boardSize = boardSize;
                     currentGame.moves.Clear();
+                    currentGame.startPoints.Clear();
 
                     // create board for game
                     var boardArray = new int[boardSize, boardSize];
