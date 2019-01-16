@@ -8,14 +8,18 @@ namespace ProgramSedziowski.Modules
         {
             foreach (var process in arr)
             {
-                if (process != null && !process.HasExited)
+                try
                 {
-                    try
+                    if (process != null && !process.HasExited)
                     {
-                        process.Kill();
+                        try
+                        {
+                            process.Kill();
+                        }
+                        catch { }
                     }
-                    catch { }
                 }
+                catch { }
             }
         }
     }

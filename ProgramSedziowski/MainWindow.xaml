@@ -127,9 +127,8 @@
             </TabItem>
             <TabItem Header="O programie">
                 <StackPanel Orientation="Vertical" Background="#00E5E5E5">
-                    <TextBlock Foreground="#FF22008C" FontSize="18">Autorzy</TextBlock>
+                    <TextBlock Foreground="#FF22008C" FontSize="18">Autor</TextBlock>
                     <TextBlock>Krzysztof Kończak</TextBlock>
-                    <TextBlock>Adam Suski</TextBlock>
                     <TextBlock Foreground="#FF22008C" FontSize="18">Sposób użycia</TextBlock>
                     <TextBlock TextWrapping="Wrap">Najpierw należy wybrać folder w którym będą znajdować się foldery z programami walczącymi. W każdym z tych folderów powinien się znaleźć program walczący oraz plik info.txt.</TextBlock>
                     <TextBlock TextWrapping="Wrap">Następnie kliknij przycisk "Uruchom testy".</TextBlock>

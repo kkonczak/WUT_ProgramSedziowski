@@ -460,7 +460,7 @@ namespace ProgramSedziowski
                             // Dla Dmitriego ;)
                             if (PositionCheckerModule.IsAllBoardFull(boardArray, boardSize))
                             {
-                                LoseGamer(currentGame, processes, 0);
+                                LoseGamer(currentGame, processes, 1);
                                 break;
                             }
                         }
